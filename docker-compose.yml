@@ -1,0 +1,31 @@
+influxdb:
+  image: tutum/influxdb
+  environment:
+    PRE_CREATE_DB: "riemann"
+  ports:
+    - "8083:8083"
+    - "8086:8086"
+  expose:
+    - "8090"
+    - "8099"
+
+riemann:
+  image: simonjohansson/riemann
+  links:
+    - influxdb
+  volumes:
+    - riemann/config:/config
+  ports:
+    - "5555:5555"
+    - "5556:5556"
+
+grafana:
+  image: tutum/grafana
+  environment:
+    INFLUXDB_HOST: 192.168.1.71
+    INFLUXDB_NAME: riemann
+    INFLUXDB_IS_GRAFANADB: "true"
+    HTTP_USER: root
+    HTTP_PASS: root
+  ports:
+    - "80:80"
