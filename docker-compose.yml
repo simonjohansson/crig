@@ -29,3 +29,8 @@ grafana:
     HTTP_PASS: root
   ports:
     - "80:80"
+
+collectd:
+  image: fr3nd/collectd
+  volumes:
+    - collectd/config/:/etc/collectd
